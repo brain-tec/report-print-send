@@ -62,6 +62,7 @@ class PrintingPrinter(models.Model):
 
     @api.multi
     def _prepare_update_from_cups(self, cups_connection, cups_printer):
+        cups.setUser(self.env.context.get('user_id', self.env.user.name))
         mapping = {
             3: 'available',
             4: 'printing',
@@ -168,6 +169,7 @@ class PrintingPrinter(models.Model):
     def print_file(self, file_name, report=None, **print_opts):
         """ Print a file """
         self.ensure_one()
+        cups.setUser(self.env.context.get('user_id', self.env.user.name))
         connection = self.server_id._open_connection(raise_on_error=True)
         options = self.print_options(report=report, **print_opts)
 

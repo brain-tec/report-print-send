@@ -72,7 +72,7 @@ class PrintingLabelZpl2(models.Model):
     test_print_mode = fields.Boolean(string="Mode Print")
     test_labelary_mode = fields.Boolean(string="Mode Labelary")
     record_id = fields.Integer(string="Record ID", default=1)
-    extra = fields.Text(string="Extra", default="{}")
+    extra = fields.Text(default="{}")
     printer_id = fields.Many2one(comodel_name="printing.printer", string="Printer")
     labelary_image = fields.Binary(
         string="Image from Labelary", compute="_compute_labelary_image"

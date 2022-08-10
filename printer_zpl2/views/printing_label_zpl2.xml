@@ -7,7 +7,7 @@
     <record id="view_printing_label_zpl2_tree" model="ir.ui.view">
         <field name="model">printing.label.zpl2</field>
         <field name="arch" type="xml">
-            <tree string="ZPL II Label">
+            <tree>
                 <field name="name" />
                 <field name="model_id" />
             </tree>
@@ -16,7 +16,7 @@
     <record id="view_printing_label_zpl2_form" model="ir.ui.view">
         <field name="model">printing.label.zpl2</field>
         <field name="arch" type="xml">
-            <form string="ZPL II Label">
+            <form>
                 <header>
                     <button name="import_zpl2" string="Import ZPL2" type="object" />
                 </header>
@@ -74,7 +74,7 @@
                                 colspan="4"
                                 context="{'default_model_id': model_id}"
                             >
-                                <tree string="Label Component">
+                                <tree>
                                     <field name="sequence" />
                                     <field name="name" />
                                     <field name="component_type" />
@@ -105,7 +105,7 @@
                                         icon="fa-plus-square"
                                     />
                                 </tree>
-                                <form string="Label Component">
+                                <form>
                                     <group>
                                         <group>
                                             <field name="name" />

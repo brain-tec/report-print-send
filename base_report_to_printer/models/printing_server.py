@@ -4,9 +4,10 @@
 import logging
 from datetime import datetime
 
+from odoo import _, exceptions, fields, models
+
 # import sys
 
-from odoo import _, exceptions, fields, models
 
 _logger = logging.getLogger(__name__)
 
@@ -21,23 +22,15 @@ class PrintingServer(models.Model):
     _name = "printing.server"
     _description = "Printing server"
 
-    name = fields.Char(
-        default="Localhost", required=True, help="Name of the server."
-    )
+    name = fields.Char(default="Localhost", required=True, help="Name of the server.")
     address = fields.Char(
         default="localhost",
         required=True,
         help="IP address or hostname of the server",
     )
-    port = fields.Integer(
-        default=631, required=True, help="Port of the server."
-    )
-    user = fields.Char(
-        help="User name to connect to the server. Empty by default."
-    )
-    password = fields.Char(
-        help="Password to connect to the server. Empty by default."
-    )
+    port = fields.Integer(default=631, required=True, help="Port of the server.")
+    user = fields.Char(help="User name to connect to the server. Empty by default.")
+    password = fields.Char(help="Password to connect to the server. Empty by default.")
     encryption_policy = fields.Selection(
         [
             ("0", "HTTP_ENCRYPT_IF_REQUESTED"),
@@ -47,9 +40,7 @@ class PrintingServer(models.Model):
         ],
         help="Encryption Policy to connect to the server. Empty by default.",
     )
-    active = fields.Boolean(
-        default=True, help="If checked, this server is useable."
-    )
+    active = fields.Boolean(default=True, help="If checked, this server is useable.")
     printer_ids = fields.One2many(
         comodel_name="printing.printer",
         inverse_name="server_id",
@@ -86,14 +77,14 @@ class PrintingServer(models.Model):
         except Exception as e:
             # print(sys.path)
             message = _(
-                "Failed to connect to the CUPS server on %s:%s. "
-                "Check that the CUPS server is running and that "
-                "you can reach it from the Odoo server."
-            ) % (self.address, self.port)
+                "Failed to connect to the CUPS server on"
+                " %%(self.address)s:%%(self.port)s. Check that the CUPS server"
+                " is running and that you can reach it from the Odoo server."
+            )
             _logger.warning(e)
             _logger.warning(message)
             if raise_on_error:
-                raise exceptions.UserError(message)
+                raise exceptions.UserError(message) from e
 
         return connection
 
@@ -235,25 +226,21 @@ class PrintingServer(models.Model):
                 cups_job_values = {
                     "name": job_data.get("job-name", ""),
                     "active": True,
-                    "job_media_progress": job_data.get(
-                        "job-media-progress", 0
-                    ),
-                    "job_state": mapping.get(
-                        job_data.get("job-state"), "unknown"
-                    ),
+                    "job_media_progress": job_data.get("job-media-progress", 0),
+                    "job_state": mapping.get(job_data.get("job-state"), "unknown"),
                     "job_state_reason": job_data.get("job-state-reasons", ""),
                     "time_at_creation": datetime.fromtimestamp(
                         job_data.get("time-at-creation", 0)
                     ),
                 }
                 if job_data.get("time-at-processing"):
-                    cups_job_values[
-                        "time_at_processing"
-                    ] = datetime.fromtimestamp(job_data["time-at-processing"])
+                    cups_job_values["time_at_processing"] = datetime.fromtimestamp(
+                        job_data["time-at-processing"]
+                    )
                 if job_data.get("time-at-completed"):
-                    cups_job_values[
-                        "time_at_completed"
-                    ] = datetime.fromtimestamp(job_data["time-at-completed"])
+                    cups_job_values["time_at_completed"] = datetime.fromtimestamp(
+                        job_data["time-at-completed"]
+                    )
 
                 job_values = {
                     fieldname: value

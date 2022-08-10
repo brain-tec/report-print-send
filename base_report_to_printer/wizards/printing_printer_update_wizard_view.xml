@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <odoo>
     <record id="printer_update_wizard" model="ir.ui.view">
         <field name="name">printing.printer.update.wizard</field>
@@ -11,7 +11,12 @@
                     </p>
                 </div>
                 <footer>
-                    <button name="action_ok" string="Ok" type="object" class="btn-primary" />
+                    <button
+                        name="action_ok"
+                        string="Ok"
+                        type="object"
+                        class="btn-primary"
+                    />
                     <button string="Cancel" class="btn-default" special="cancel" />
                 </footer>
             </form>
@@ -23,5 +28,10 @@
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>
-    <menuitem action="action_printer_update_wizard" sequence="40" id="menu_printer_update_wizard" parent="printing_menu" />
+    <menuitem
+        action="action_printer_update_wizard"
+        sequence="40"
+        id="menu_printer_update_wizard"
+        parent="printing_menu"
+    />
 </odoo>

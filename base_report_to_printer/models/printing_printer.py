@@ -86,7 +86,7 @@ class PrintingPrinter(models.Model):
         }
 
         printer_uri = cups_printer["printer-uri-supported"]
-        printer_system_name = printer_uri[printer_uri.rfind("/") + 1:]
+        printer_system_name = printer_uri[printer_uri.rfind("/") + 1 :]
         ppd_info = cups_connection.getPPD3(printer_system_name)
         ppd_path = ppd_info[2]
         if not ppd_path:
@@ -167,14 +167,13 @@ class PrintingPrinter(models.Model):
         options = {}
         for option, value in print_opts.items():
             try:
-                options.update(getattr(self, "_set_option_%s" %
-                               option)(report, value))
+                options.update(getattr(self, "_set_option_%s" % option)(report, value))
             except AttributeError:
                 options[option] = str(value)
         return options
 
     def print_file(self, file_name, report=None, **print_opts):
-        """ Print a file """
+        """Print a file"""
         self.ensure_one()
         title = print_opts.pop("title", file_name)
         connection = self.server_id._open_connection(raise_on_error=True)
@@ -184,17 +183,14 @@ class PrintingPrinter(models.Model):
             "Sending job to CUPS printer %s on %s with options %s"
             % (self.system_name, self.server_id.address, options)
         )
-        connection.printFile(self.system_name, file_name,
-                             title, options=options)
+        connection.printFile(self.system_name, file_name, title, options=options)
         _logger.info(
-            "Printing job: '{}' on {}".format(
-                file_name, self.server_id.address)
+            "Printing job: '{}' on {}".format(file_name, self.server_id.address)
         )
         try:
             os.remove(file_name)
         except OSError as exc:
-            _logger.warning(
-                "Unable to remove temporary file %s: %s", file_name, exc)
+            _logger.warning("Unable to remove temporary file %s: %s", file_name, exc)
         return True
 
     def set_default(self):
@@ -220,8 +216,7 @@ class PrintingPrinter(models.Model):
     def cancel_all_jobs(self, purge_jobs=False):
         for printer in self:
             connection = printer.server_id._open_connection()
-            connection.cancelAllJobs(
-                name=printer.system_name, purge_jobs=purge_jobs)
+            connection.cancelAllJobs(name=printer.system_name, purge_jobs=purge_jobs)
 
         # Update jobs' states into Odoo
         self.mapped("server_id").update_jobs(which="completed")

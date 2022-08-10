@@ -24,19 +24,31 @@ class TestRemotePrinter(TransactionCase):
             {"name": "Server", "address": "localhost", "port": 631}
         )
         self.printer_1 = self.env["printing.printer"].create(
-            {"name": "Printer 1", "system_name": "P1", "server_id": self.server.id}
+            {
+                "name": "Printer 1",
+                "system_name": "P1",
+                "server_id": self.server.id,
+            }
         )
         self.printer_2 = self.env["printing.printer"].create(
-            {"name": "Printer 2", "system_name": "P2", "server_id": self.server.id}
+            {
+                "name": "Printer 2",
+                "system_name": "P2",
+                "server_id": self.server.id,
+            }
         )
         self.tray_1 = self.env["printing.tray"].create(
-            {"name": "Tray", "system_name": "P2", "printer_id": self.printer_1.id}
+            {
+                "name": "Tray",
+                "system_name": "P2",
+                "printer_id": self.printer_1.id,
+            }
         )
 
     def _create_user(self, name, group_ids):
         return (
             self.env["res.users"]
-            .with_context({"no_reset_password": True})
+            .with_context(**{"no_reset_password": True})
             .create(
                 {
                     "name": name,
@@ -102,7 +114,7 @@ class TestRemotePrinter(TransactionCase):
             ],
             limit=1,
         )
-        self.assertEquals(printer, self.env["res.remote.printer"])
+        self.assertEqual(printer, self.env["res.remote.printer"])
 
     def test_permissions_delete_user(self):
         printer = (

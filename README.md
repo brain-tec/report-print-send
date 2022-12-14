@@ -7,6 +7,10 @@
 
 <!-- /!\ do not modify above this line -->
 
+# BT Customizations
+Open OCA PRs merged
+- (https://github.com/OCA/report-print-send/pull/304) printer_zpl2
+
 # report-print-send
 
 TODO: add repo description.
